@@ -15,8 +15,9 @@ export function SignUp() {
     try {
       await signUp(email, password);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Sign up failed';
-      setError(message);
+      console.error('Sign up error:', err);
+      const msg = err instanceof Error ? err.message : 'Sign up failed';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -47,7 +48,7 @@ export function SignUp() {
             {loading ? 'Creating...' : 'Sign Up'}
           </button>
         </form>
-        <button className="auth-google" onClick={signInWithGoogle} disabled={loading}>
+        <button className="auth-google" onClick={() => signInWithGoogle()} disabled={loading}>
           Sign up with Google
         </button>
         <p className="auth-switch">

@@ -110,3 +110,17 @@ input:focus, select:focus, textarea:focus {
   color: var(--text-secondary);
   font-size: 1.125rem;
 }
+
+/* Right panel */
+.right-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  min-height: 200px;
+}
+
+/* Task cards in compact mode */
+.task-card.compact .task-main {
+  cursor: pointer;
+}
