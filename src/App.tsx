@@ -1,5 +1,5 @@
-import { Component, ReactNode, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
+import { Component, ReactNode } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Layout } from './components/Layout';
 import { SignIn } from './components/Auth/SignIn';
@@ -35,14 +35,6 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
 
 function AuthGate() {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && user) {
-      navigate('/', { replace: true });
-    }
-  }, [user, loading, navigate]);
-
   if (loading) return <div className="loading-screen">Loading...</div>;
   if (!user) return <Navigate to="/signin" replace />;
   return <Outlet />;
