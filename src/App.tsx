@@ -1,5 +1,5 @@
 import { Component, ReactNode, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Layout } from './components/Layout';
 import { SignIn } from './components/Auth/SignIn';
@@ -33,19 +33,19 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
   }
 }
 
-function AuthGate({ children }: { children: ReactNode }) {
+function AuthGate() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && user) {
-      navigate('/');
+      navigate('/', { replace: true });
     }
   }, [user, loading, navigate]);
 
   if (loading) return <div className="loading-screen">Loading...</div>;
   if (!user) return <Navigate to="/signin" replace />;
-  return <>{children}</>;
+  return <Outlet />;
 }
 
 function AppRoutes() {
@@ -53,23 +53,16 @@ function AppRoutes() {
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route
-        path="/*"
-        element={
-          <AuthGate>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/group/:groupId" element={<Home />} />
-                <Route path="/archived" element={<Archived />} />
-                <Route path="/stats" element={<Stats />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Layout>
-          </AuthGate>
-        }
-      />
+      <Route element={<AuthGate />}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/group/:groupId" element={<Home />} />
+          <Route path="/archived" element={<Archived />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Route>
     </Routes>
   );
 }
