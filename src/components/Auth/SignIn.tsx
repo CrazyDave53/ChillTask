@@ -51,7 +51,7 @@ export function SignIn() {
           Sign in with Google
         </button>
         <p className="auth-switch">
-          Don't have an account? <a href="/signup">Sign up</a>
+          Don't have an account? <a href="/ChillTask/signup">Sign up</a>
         </p>
       </div>
       <style>{`

@@ -69,7 +69,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter basename="/ChillTask">
         <AuthProvider>
           <AppRoutes />
         </AuthProvider>

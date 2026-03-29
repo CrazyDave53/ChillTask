@@ -52,7 +52,7 @@ export function SignUp() {
           Sign up with Google
         </button>
         <p className="auth-switch">
-          Already have an account? <a href="/signin">Sign in</a>
+          Already have an account? <a href="/ChillTask/signin">Sign in</a>
         </p>
       </div>
       <style>{`
