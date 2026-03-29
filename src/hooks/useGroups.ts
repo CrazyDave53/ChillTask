@@ -40,13 +40,20 @@ export function useGroups() {
       where('userId', '==', user.uid),
       orderBy('order', 'asc')
     );
-    const unsubscribe = onSnapshot(q, (snap) => {
-      const data = snap.docs
-        .map((d) => ({ id: d.id, ...parseDoc(d.data()) } as Group))
-        .filter((g) => g.userId === user.uid);
-      setGroups(data);
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs
+          .map((d) => ({ id: d.id, ...parseDoc(d.data()) } as Group))
+          .filter((g) => g.userId === user.uid);
+        setGroups(data);
+        setLoading(false);
+      },
+      (error) => {
+        console.error('useGroups error:', error);
+        setLoading(false);
+      }
+    );
     return unsubscribe;
   }, [user]);
 

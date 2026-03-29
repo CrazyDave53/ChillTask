@@ -40,11 +40,18 @@ export function useTasks() {
       where('userId', '==', user.uid),
       orderBy('createdAt', 'desc')
     );
-    const unsubscribe = onSnapshot(q, (snap) => {
-      const data = snap.docs.map((d) => ({ id: d.id, ...parseDoc(d.data()) } as Task));
-      setTasks(data);
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...parseDoc(d.data()) } as Task));
+        setTasks(data);
+        setLoading(false);
+      },
+      (error) => {
+        console.error('useTasks error:', error);
+        setLoading(false);
+      }
+    );
     return unsubscribe;
   }, [user]);
 

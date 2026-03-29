@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function SignIn() {
   const { signIn, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,9 +16,25 @@ export function SignIn() {
     setLoading(true);
     try {
       await signIn(email, password);
+      navigate('/');
     } catch (err: unknown) {
       console.error('Sign in error:', err);
       const msg = err instanceof Error ? err.message : 'Sign in failed';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await signInWithGoogle();
+      navigate('/');
+    } catch (err: unknown) {
+      console.error('Google sign in error:', err);
+      const msg = err instanceof Error ? err.message : 'Google sign in failed';
       setError(msg);
     } finally {
       setLoading(false);
@@ -47,7 +65,7 @@ export function SignIn() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-        <button className="auth-google" onClick={() => signInWithGoogle()} disabled={loading}>
+        <button className="auth-google" onClick={handleGoogle} disabled={loading}>
           Sign in with Google
         </button>
         <p className="auth-switch">
